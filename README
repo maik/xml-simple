@@ -13,18 +13,6 @@ doc directory of the distribution.
 
 See INSTALL.
 
-== Ideas
-
-I still have some ideas for XmlSimple on my "to do" list and I will
-watch the development of the Perl version. If you miss a feature or
-think you have a good idea that would make this library even more
-useful, just let me know.
-
-== Development
-
-Of course, active developers that will improve XmlSimple are
-always welcome. Contact me!
-
 == License
 
 XmlSimple is Copyright (c) 2003-2011 Maik Schmidt. It is free software,
