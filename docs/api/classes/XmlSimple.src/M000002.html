@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>xml_in (XmlSimple)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 149</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">xml_in</span>(<span class="ruby-identifier">string</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">options</span> = <span class="ruby-keyword kw">nil</span>)
+    <span class="ruby-identifier">handle_options</span>(<span class="ruby-value str">'in'</span>, <span class="ruby-identifier">options</span>)
+
+    <span class="ruby-comment cmt"># If no XML string or filename was supplied look for scriptname.xml.</span>
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">string</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">string</span> = <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">basename</span>(<span class="ruby-identifier">$0</span>)
+      <span class="ruby-identifier">string</span>.<span class="ruby-identifier">sub!</span>(<span class="ruby-regexp re">/\.[^.]+$/</span>, <span class="ruby-value str">''</span>)
+      <span class="ruby-identifier">string</span> <span class="ruby-operator">+=</span> <span class="ruby-value str">'.xml'</span>
+
+      <span class="ruby-identifier">directory</span> = <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">$0</span>)
+      <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'searchpath'</span>].<span class="ruby-identifier">unshift</span>(<span class="ruby-identifier">directory</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">directory</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">string</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">String</span>)
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">string</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/&lt;.*?&gt;/</span><span class="ruby-identifier">m</span>
+        <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">string</span>)
+      <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">string</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'-'</span>
+        <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">$stdin</span>.<span class="ruby-identifier">readlines</span>.<span class="ruby-identifier">to_s</span>)
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-identifier">filename</span> = <span class="ruby-identifier">find_xml_file</span>(<span class="ruby-identifier">string</span>, <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'searchpath'</span>])
+
+        <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-value str">'cache'</span>)
+          <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'cache'</span>].<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">scheme</span><span class="ruby-operator">|</span>
+            <span class="ruby-keyword kw">case</span>(<span class="ruby-identifier">scheme</span>)
+            <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'storable'</span>
+              <span class="ruby-identifier">content</span> = <span class="ruby-ivar">@@cache</span>.<span class="ruby-identifier">restore_storable</span>(<span class="ruby-identifier">filename</span>)
+            <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'mem_share'</span>
+              <span class="ruby-identifier">content</span> = <span class="ruby-ivar">@@cache</span>.<span class="ruby-identifier">restore_mem_share</span>(<span class="ruby-identifier">filename</span>)
+            <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'mem_copy'</span>
+              <span class="ruby-identifier">content</span> = <span class="ruby-ivar">@@cache</span>.<span class="ruby-identifier">restore_mem_copy</span>(<span class="ruby-identifier">filename</span>)
+            <span class="ruby-keyword kw">else</span>
+              <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;Unsupported caching scheme: &lt;#{scheme}&gt;.&quot;</span>
+            <span class="ruby-keyword kw">end</span>
+            <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">content</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">content</span>
+          }
+        <span class="ruby-keyword kw">end</span>
+        
+        <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">load_xml_file</span>(<span class="ruby-identifier">filename</span>)
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">string</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">IO</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">string</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">StringIO</span>)
+      <span class="ruby-ivar">@doc</span> = <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">string</span>.<span class="ruby-identifier">readlines</span>.<span class="ruby-identifier">to_s</span>)
+    <span class="ruby-keyword kw">else</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;Could not parse object of type: &lt;#{string.type}&gt;.&quot;</span>
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-identifier">result</span> = <span class="ruby-identifier">collapse</span>(<span class="ruby-ivar">@doc</span>.<span class="ruby-identifier">root</span>)
+    <span class="ruby-identifier">result</span> = <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'keeproot'</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">merge</span>({}, <span class="ruby-ivar">@doc</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">result</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">result</span>
+    <span class="ruby-identifier">put_into_cache</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">filename</span>)
+    <span class="ruby-identifier">result</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

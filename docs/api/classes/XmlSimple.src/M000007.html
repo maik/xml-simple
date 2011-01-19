@@ -1,0 +1,147 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>handle_options (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 317</span>
+  <span class="kw">def</span> handle_options(direction, options)
+    @options = options || Hash.new
+
+    raise ArgumentError, <span class="str">&quot;Options must be a Hash!&quot;</span> <span class="kw">unless</span> @options.instance_of?(Hash)
+
+    <span class="kw">unless</span> KNOWN_OPTIONS.has_key?(direction)
+      raise ArgumentError, &quot;Unknown direction: &lt;#{direction}&gt;.&quot;
+    <span class="kw">end</span>
+
+    known_options = KNOWN_OPTIONS[direction]
+    @options = normalize_option_names(@options, known_options)
+
+    <span class="kw">unless</span> @default_options.nil?
+      known_options.each { |option|
+        <span class="kw">unless</span> @options.has_key?(option)
+          <span class="kw">if</span> @default_options.has_key?(option)
+            @options[option] = @default_options[option]
+          <span class="kw">end</span>
+        <span class="kw">end</span>
+      }
+    <span class="kw">end</span>
+
+    <span class="kw">unless</span> @options.has_key?(<span class="str">'noattr'</span>)
+        @options[<span class="str">'noattr'</span>] = <span class="kw">false</span>
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> @options.has_key?(<span class="str">'rootname'</span>)
+      @options[<span class="str">'rootname'</span>] = <span class="str">''</span> <span class="kw">if</span> @options[<span class="str">'rootname'</span>].nil?
+    <span class="kw">else</span>
+      @options[<span class="str">'rootname'</span>] = DEF_ROOT_NAME
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> @options.has_key?(<span class="str">'xmldeclaration'</span>) &amp;&amp; @options[<span class="str">'xmldeclaration'</span>] == <span class="kw">true</span>
+      @options[<span class="str">'xmldeclaration'</span>] = DEF_XML_DECLARATION
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> @options.has_key?(<span class="str">'contentkey'</span>)
+      <span class="kw">if</span> @options[<span class="str">'contentkey'</span>] =~ <span class="re">/^-(.*)$/</span>
+        @options[<span class="str">'contentkey'</span>]    = $1
+        @options[<span class="str">'collapseagain'</span>] = <span class="kw">true</span>
+      <span class="kw">end</span>
+    <span class="kw">else</span>
+      @options[<span class="str">'contentkey'</span>] = DEF_CONTENT_KEY
+    <span class="kw">end</span>
+
+    <span class="kw">unless</span> @options.has_key?(<span class="str">'normalisespace'</span>)
+      @options[<span class="str">'normalisespace'</span>] = @options[<span class="str">'normalizespace'</span>]
+    <span class="kw">end</span>
+    @options[<span class="str">'normalisespace'</span>] = 0 <span class="kw">if</span> @options[<span class="str">'normalisespace'</span>].nil?
+
+    <span class="kw">if</span> @options.has_key?(<span class="str">'searchpath'</span>)
+      <span class="kw">unless</span> @options[<span class="str">'searchpath'</span>].instance_of?(Array)
+        @options[<span class="str">'searchpath'</span>] = [ @options[<span class="str">'searchpath'</span>] ]
+      <span class="kw">end</span>
+    <span class="kw">else</span>
+      @options[<span class="str">'searchpath'</span>] = []
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> @options.has_key?(<span class="str">'cache'</span>) &amp;&amp; scalar(@options[<span class="str">'cache'</span>])
+      @options[<span class="str">'cache'</span>] = [ @options[<span class="str">'cache'</span>] ]
+    <span class="kw">end</span>
+
+    @options[<span class="str">'anonymoustag'</span>] = DEF_ANONYMOUS_TAG <span class="kw">unless</span> @options.has_key?(<span class="str">'anonymoustag'</span>)
+
+    <span class="kw">if</span> !@options.has_key?(<span class="str">'indent'</span>) || @options[<span class="str">'indent'</span>].nil?
+      @options[<span class="str">'indent'</span>] = DEF_INDENTATION
+    <span class="kw">end</span>
+
+    @options[<span class="str">'indent'</span>] = <span class="str">''</span> <span class="kw">if</span> @options.has_key?(<span class="str">'noindent'</span>)
+
+    <span class="cmt"># Special cleanup for 'keyattr' which could be an array or</span>
+    <span class="cmt"># a hash or left to default to array.</span>
+    <span class="kw">if</span> @options.has_key?(<span class="str">'keyattr'</span>)
+      <span class="kw">if</span> !scalar(@options[<span class="str">'keyattr'</span>])
+        <span class="cmt"># Convert keyattr =&gt; { elem =&gt; '+attr' }</span>
+        <span class="cmt">#      to keyattr =&gt; { elem =&gt; ['attr', '+'] }</span>
+        <span class="kw">if</span> @options[<span class="str">'keyattr'</span>].instance_of?(Hash)
+          @options[<span class="str">'keyattr'</span>].each { |key, value|
+            <span class="kw">if</span> value =~ <span class="re">/^([-+])?(.*)$/</span>
+              @options[<span class="str">'keyattr'</span>][key] = [$2, $1 ? $1 : <span class="str">''</span>]
+            <span class="kw">end</span>
+          }
+        <span class="kw">elsif</span> !@options[<span class="str">'keyattr'</span>].instance_of?(Array)
+          raise ArgumentError, <span class="str">&quot;'keyattr' must be String, Hash, or Array!&quot;</span>
+        <span class="kw">end</span>
+      <span class="kw">else</span>
+        @options[<span class="str">'keyattr'</span>] = [ @options[<span class="str">'keyattr'</span>] ]
+      <span class="kw">end</span>
+    <span class="kw">else</span>
+      @options[<span class="str">'keyattr'</span>] = DEF_KEY_ATTRIBUTES
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> @options.has_key?(<span class="str">'forcearray'</span>)
+      <span class="kw">if</span> @options[<span class="str">'forcearray'</span>].instance_of?(Regexp)
+        @options[<span class="str">'forcearray'</span>] = [ @options[<span class="str">'forcearray'</span>] ]
+      <span class="kw">end</span>
+
+      <span class="kw">if</span> @options[<span class="str">'forcearray'</span>].instance_of?(Array)
+        force_list = @options[<span class="str">'forcearray'</span>]
+        <span class="kw">unless</span> force_list.empty?
+          @options[<span class="str">'forcearray'</span>] = {}
+          force_list.each { |tag|
+            <span class="kw">if</span> tag.instance_of?(Regexp)
+              <span class="kw">unless</span> @options[<span class="str">'forcearray'</span>][<span class="str">'_regex'</span>].instance_of?(Array)
+                @options[<span class="str">'forcearray'</span>][<span class="str">'_regex'</span>] = []
+              <span class="kw">end</span>
+              @options[<span class="str">'forcearray'</span>][<span class="str">'_regex'</span>] &lt;&lt; tag
+            <span class="kw">else</span>
+              @options[<span class="str">'forcearray'</span>][tag] = <span class="kw">true</span>
+            <span class="kw">end</span>
+          }
+        <span class="kw">else</span>
+          @options[<span class="str">'forcearray'</span>] = <span class="kw">false</span>
+        <span class="kw">end</span>
+      <span class="kw">else</span>
+        @options[<span class="str">'forcearray'</span>] = @options[<span class="str">'forcearray'</span>] ? <span class="kw">true</span> : <span class="kw">false</span>
+      <span class="kw">end</span>
+    <span class="kw">else</span>
+      @options[<span class="str">'forcearray'</span>] = DEF_FORCE_ARRAY
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> @options.has_key?(<span class="str">'grouptags'</span>) &amp;&amp; !@options[<span class="str">'grouptags'</span>].instance_of?(Hash)
+      raise ArgumentError, <span class="str">&quot;Illegal value for 'GroupTags' option - expected a Hash.&quot;</span>
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> @options.has_key?(<span class="str">'variables'</span>) &amp;&amp; !@options[<span class="str">'variables'</span>].instance_of?(Hash)
+      raise ArgumentError, <span class="str">&quot;Illegal value for 'Variables' option - expected a Hash.&quot;</span>
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> @options.has_key?(<span class="str">'variables'</span>)
+      @_var_values = @options[<span class="str">'variables'</span>]
+    <span class="kw">elsif</span> @options.has_key?(<span class="str">'varattr'</span>)
+      @_var_values = {}
+    <span class="kw">end</span>
+  <span class="kw">end</span></pre>
+</body>
+</html>

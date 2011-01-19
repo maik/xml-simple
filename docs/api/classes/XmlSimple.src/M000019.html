@@ -1,0 +1,19 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>get_var (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 721</span>
+  <span class="kw">def</span> get_var(name)
+    <span class="kw">if</span> @_var_values.has_key?(name)
+      <span class="kw">return</span> @_var_values[name]
+    <span class="kw">else</span>
+      <span class="kw">return</span> &quot;${#{name}}&quot;
+    <span class="kw">end</span>
+  <span class="kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,21 @@
+XmlSimple installation instructions
+---------------------------------------
+
+Requirements:
+
+- Ruby 1.6.x
+- REXML >= 2.7.1 (standard on Ruby >= 1.8.0)
+
+Installation:
+
+XmlSimple is available as a Gem, so the easiest way to install it
+is to call
+
+  $ gem install xml-simple
+
+If you do not have rubygems installed, try the following:
+
+  $ ruby install.rb config
+  $ ruby install.rb setup
+  $ ruby install.rb install
+

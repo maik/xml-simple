@@ -1,0 +1,36 @@
+<!--
+-->
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<config
+  <db>
+    <name>shop</name>
+    <user>maik</user>
+  </db>
+  <int-amount>42</int-amount>
+  <negative-int-amount>-42</negative-int-amount>
+  <float-amount>3.14</float-amount>
+  <negative-float-amount>-3.14</negative-float-amount>
+  <timer value='100' />
+  <environment-variable att='${PARAM2}'>This is ${PARAM_1} (${PARAM2}).</environment-variable>
+  <bools>
+    <no-1>
+      true
+    </no-1>
+    <no-2>false</no-2>
+    <no-3>1</no-3>
+    <no-4>0</no-4>
+    <no-5>yes</no-5>
+    <no-6>no</no-6>
+    <no-7>on</no-7>
+    <no-8>off</no-8>
+    <no-9>  TrUe </no-9>
+    <no-10>FaLsE  </no-10>
+    <no-11> yEs</no-11>
+    <no-12>  nO </no-12>
+    <no-13> oN   </no-13>
+    <no-14>  oFf  </no-14>
+  </bools>
+</config>
+

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+  Konfigurationsdatei für den ResponseChecker.
+-->
+<config>
+  <mailbox path='d:/usr/maik/project/valentins/response_checker_1.0.0/test/data' />
+
+  <response-types>
+    <response-type name='UnknownReason'    code='0' />
+    <response-type name='UnknownRecipient' code='1' />
+    <response-type name='AutoResponse'     code='2' />
+    <response-type name='QuotaExceeded'    code='3' />
+    <response-type name='SyntaxError'      code='4' />
+    <response-type name='UnknownDomain'    code='5' />
+    <response-type name='MailboxSuspended' code='6' />
+    <response-type name='VirusAlert'       code='7' />
+  </response-types>
+  
+  <response-patterns>
+    <patterns type='QuotaExceeded'>
+      <pattern>Benutzerquote wurde überschritten</pattern>
+      <pattern>(user is )?over quota</pattern>
+      <pattern>Maildirectory voll</pattern>
+      <pattern>(quota|mailbox has) exceeded</pattern>
+      <pattern>allowed quota</pattern>
+      <pattern>mailbox (full|voll|exceeds)</pattern>
+      <pattern>(account|mailbox) is full</pattern>
+    </patterns>
+    <patterns type='AutoResponse'>
+      <pattern>Auto((-?reply)|-Submitted| Response|responder)</pattern>
+      <pattern>Abwesenheitsnotiz</pattern>
+      <pattern>automated respo</pattern>
+      <pattern>automatische</pattern>
+    </patterns>
+    <patterns type='UnknownRecipient'>
+      <pattern>benutzer unbekannt</pattern>
+      <pattern>no such mailbox</pattern>
+      <pattern>unbekannte E-Mail-Adresse</pattern>
+      <pattern>Unbekannter Empfänger</pattern>
+      <pattern>User is (not known|unknown)</pattern>
+      <pattern>No such user</pattern>
+      <pattern>name is not recognized</pattern>
+      <pattern>unknown user</pattern>
+      <pattern>user unknown</pattern>
+      <pattern>user_unknown</pattern>
+      <pattern>invalid recipient</pattern>
+      <pattern>no mailbox</pattern>
+      <pattern>Recipient not allowed</pattern>
+      <pattern>not allowed to receive mail</pattern>
+    </patterns>
+    <patterns type='SyntaxError'>
+      <pattern>malformed address</pattern>
+    </patterns>
+    <patterns type='UnknownDomain'>
+      <pattern>host not found</pattern>
+      <pattern>bad destination</pattern>
+      <pattern>unknown subdomain</pattern>
+    </patterns>
+    <patterns type='MailboxSuspended'>
+      <pattern>mailbox has been suspended</pattern>
+      <pattern>mail-address is no longer valid</pattern>
+    </patterns>
+    <patterns type='VirusAlert'>
+      <pattern>Virus</pattern>
+    </patterns>
+    <patterns type='UnknownReason'>
+      <pattern>not listed in</pattern>
+      <pattern>did not reach the following</pattern>
+      <pattern>cannot be delivered</pattern>
+      <pattern>Nachricht nicht empfangen|zugestellt</pattern>
+      <pattern>konnte nicht ausgeliefert werden</pattern>
+      <pattern>message? could not be delivered</pattern>
+      <pattern>nger fehlgeschlagen</pattern>
+      <pattern>cannot find the path specified</pattern>
+      <pattern>Error During Delivery</pattern>
+      <pattern>failure notice</pattern>
+      <pattern>Undeliverable mail</pattern>
+      <pattern>undeliverable</pattern>
+      <pattern>Unzustellbar</pattern>
+      <pattern>Mailzustellung fehlgeschlagen</pattern>
+      <pattern>Undelivered Mail</pattern>
+      <pattern>Delivery failure</pattern>
+      <pattern>permanent fatal errors</pattern>
+      <pattern>returning message to sender</pattern>
+      <pattern>mailbox unavailable</pattern>
+      <pattern>recipients failed</pattern>
+      <pattern>does not exist</pattern>
+      <pattern>Warning: message</pattern>
+      <pattern>\berror</pattern>
+    </patterns>
+  </response-patterns>
+
+  <db>
+    <name>DBI:Mysql:shop</name>
+    <user></user>
+    <pwd></pwd>
+  </db>
+
+  <log4r_config>
+    <outputter type="StderrOutputter" name="console" level="DEBUG"/>
+
+    <outputter type="FileOutputter" name="logfile" level="DEBUG">
+      <filename>d:/usr/maik/project/valentins/response_checker_1.0.0/logs/response_checker.log</filename>
+      <!-- <trunc>false</trunc> -->
+      <formatter type="PatternFormatter" pattern="%d [%l] %m" />
+    </outputter>
+
+    <logger name="ResponseChecker"    level="DEBUG" outputters="logfile"/>
+    <logger name="ResponseClassifier" level="DEBUG" outputters="logfile"/>
+  </log4r_config> 
+</config>
+

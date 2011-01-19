@@ -1,0 +1,117 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>value_to_xml (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 738</span>
+  <span class="kw">def</span> value_to_xml(ref, name, indent)
+    named = !name.nil? &amp;&amp; name != <span class="str">''</span>
+    nl    = @options.has_key?(<span class="str">'noindent'</span>) ? <span class="str">''</span> : <span class="str">&quot;\n&quot;</span>
+
+    <span class="kw">if</span> !scalar(ref)
+      <span class="kw">if</span> @ancestors.member?(ref)
+        raise ArgumentError, <span class="str">&quot;Circular data structures not supported!&quot;</span>
+      <span class="kw">end</span>
+      @ancestors &lt;&lt; ref
+    <span class="kw">else</span>
+      <span class="kw">if</span> named
+        <span class="kw">return</span> [indent, <span class="str">'&lt;'</span>, name, <span class="str">'&gt;'</span>, @options[<span class="str">'noescape'</span>] ? ref.to_s : escape_value(ref.to_s), <span class="str">'&lt;/'</span>, name, <span class="str">'&gt;'</span>, nl].join(<span class="str">''</span>)
+      <span class="kw">else</span>
+        <span class="kw">return</span> ref.to_s + nl
+      <span class="kw">end</span>
+    <span class="kw">end</span>
+
+    <span class="cmt"># Unfold hash to array if possible.</span>
+    <span class="kw">if</span> ref.instance_of?(Hash) &amp;&amp; !ref.empty? &amp;&amp; !@options[<span class="str">'keyattr'</span>].empty? &amp;&amp; indent != <span class="str">''</span>
+      ref = hash_to_array(name, ref)
+    <span class="kw">end</span>
+
+    result = []
+    <span class="kw">if</span> ref.instance_of?(Hash)
+      <span class="cmt"># Reintermediate grouped values if applicable.</span>
+      <span class="kw">if</span> @options.has_key?(<span class="str">'grouptags'</span>)
+        ref.each { |key, value|
+          <span class="kw">if</span> @options[<span class="str">'grouptags'</span>].has_key?(key)
+            ref[key] = { @options[<span class="str">'grouptags'</span>][key] =&gt; value }
+          <span class="kw">end</span>
+        }
+      <span class="kw">end</span>
+      
+      nested = []
+      text_content = <span class="kw">nil</span>
+      <span class="kw">if</span> named
+        result &lt;&lt; indent &lt;&lt; <span class="str">'&lt;'</span> &lt;&lt; name
+      <span class="kw">end</span>
+
+      <span class="kw">if</span> !ref.empty?
+        ref.each { |key, value|
+          <span class="kw">next</span> <span class="kw">if</span> !key.nil? &amp;&amp; key[0, 1] == <span class="str">'-'</span>
+          <span class="kw">if</span> value.nil?
+            <span class="kw">unless</span> @options.has_key?(<span class="str">'suppressempty'</span>) &amp;&amp; @options[<span class="str">'suppressempty'</span>].nil?
+              raise ArgumentError, <span class="str">&quot;Use of uninitialized value!&quot;</span>
+            <span class="kw">end</span>
+            value = {}
+          <span class="kw">end</span>
+
+          <span class="kw">if</span> !scalar(value) || @options[<span class="str">'noattr'</span>]
+            nested &lt;&lt; value_to_xml(value, key, indent + @options[<span class="str">'indent'</span>])
+          <span class="kw">else</span>
+            value = value.to_s
+            value = escape_value(value) <span class="kw">unless</span> @options[<span class="str">'noescape'</span>]
+            <span class="kw">if</span> key == @options[<span class="str">'contentkey'</span>]
+              text_content = value
+            <span class="kw">else</span>
+              result &lt;&lt; <span class="str">' '</span> &lt;&lt; key &lt;&lt; <span class="str">'=&quot;'</span> &lt;&lt; value &lt;&lt; <span class="str">'&quot;'</span>
+            <span class="kw">end</span>
+          <span class="kw">end</span>
+        }
+      <span class="kw">else</span>
+        text_content = <span class="str">''</span>
+      <span class="kw">end</span>
+
+      <span class="kw">if</span> !nested.empty? || !text_content.nil?
+        <span class="kw">if</span> named
+          result &lt;&lt; <span class="str">'&gt;'</span>
+          <span class="kw">if</span> !text_content.nil?
+            result &lt;&lt; text_content
+            nested[0].sub!(<span class="re">/^\s+/</span>, <span class="str">''</span>) <span class="kw">if</span> !nested.empty?
+          <span class="kw">else</span>
+            result &lt;&lt; nl
+          <span class="kw">end</span>
+          <span class="kw">if</span> !nested.empty?
+            result &lt;&lt; nested &lt;&lt; indent
+          <span class="kw">end</span>
+          result &lt;&lt; <span class="str">'&lt;/'</span> &lt;&lt; name &lt;&lt; <span class="str">'&gt;'</span> &lt;&lt; nl
+        <span class="kw">else</span>
+          result &lt;&lt; nested
+        <span class="kw">end</span>
+      <span class="kw">else</span>
+        result &lt;&lt; <span class="str">' /&gt;'</span> &lt;&lt; nl
+      <span class="kw">end</span>
+    <span class="kw">elsif</span> ref.instance_of?(Array)
+      ref.each { |value|
+        <span class="kw">if</span> scalar(value)
+          result &lt;&lt; indent &lt;&lt; <span class="str">'&lt;'</span> &lt;&lt; name &lt;&lt; <span class="str">'&gt;'</span>
+          result &lt;&lt; (@options[<span class="str">'noescape'</span>] ? value.to_s : escape_value(value.to_s))
+          result &lt;&lt; <span class="str">'&lt;/'</span> &lt;&lt; name &lt;&lt; <span class="str">'&gt;'</span> &lt;&lt; nl
+        <span class="kw">elsif</span> value.instance_of?(Hash)
+          result &lt;&lt; value_to_xml(value, name, indent)
+        <span class="kw">else</span>
+          result &lt;&lt; indent &lt;&lt; <span class="str">'&lt;'</span> &lt;&lt; name &lt;&lt; <span class="str">'&gt;'</span> &lt;&lt; nl
+          result &lt;&lt; value_to_xml(value, @options[<span class="str">'anonymoustag'</span>], indent + @options[<span class="str">'indent'</span>])
+          result &lt;&lt; indent &lt;&lt; <span class="str">'&lt;/'</span> &lt;&lt; name &lt;&lt; <span class="str">'&gt;'</span> &lt;&lt; nl
+        <span class="kw">end</span>
+      }
+    <span class="kw">else</span>
+      <span class="cmt"># Probably, this is obsolete.</span>
+      raise ArgumentError, &quot;Can't encode a value of type: #{ref.type}.&quot;
+    <span class="kw">end</span>
+    @ancestors.pop <span class="kw">if</span> !scalar(ref)
+    result.join(<span class="str">''</span>)
+  <span class="kw">end</span></pre>
+</body>
+</html>

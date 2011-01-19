@@ -1,0 +1,25 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>normalize_option_names (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 296</span>
+  <span class="kw">def</span> normalize_option_names(options, known_options)
+    <span class="kw">return</span> <span class="kw">nil</span> <span class="kw">if</span> options.nil?
+    result = Hash.new
+    options.each { |key, value|
+      lkey = key.downcase
+      lkey.gsub!(<span class="re">/_/</span>, <span class="str">''</span>)
+      <span class="kw">if</span> !known_options.member?(lkey)
+        raise ArgumentError, &quot;Unrecognised option: #{lkey}.&quot;
+      <span class="kw">end</span>
+      result[lkey] = value
+    }
+    result
+  <span class="kw">end</span></pre>
+</body>
+</html>

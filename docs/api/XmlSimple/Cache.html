@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+	<title>Class: XmlSimple::Cache</title>
+
+	<link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+	<script src="../js/jquery.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/thickbox-compressed.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/quicksearch.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/darkfish.js" type="text/javascript"
+		charset="utf-8"></script>
+
+</head>
+<body class="class">
+
+	<div id="metadata">
+		<div id="home-metadata">
+			<div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+			</div>
+		</div>
+
+		<div id="file-metadata">
+			<div id="file-list-section" class="section">
+				<h3 class="section-header">In Files</h3>
+				<div class="section-body">
+					<ul>
+					
+						<li><a href="../lib/xmlsimple_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+							class="thickbox" title="lib/xmlsimple.rb">lib/xmlsimple.rb</a></li>
+					
+					</ul>
+				</div>
+			</div>
+
+			
+		</div>
+
+		<div id="class-metadata">
+
+			<!-- Parent Class -->
+			
+			<div id="parent-class-section" class="section">
+				<h3 class="section-header">Parent</h3>
+				
+				<p class="link">Object</p>
+				
+			</div>
+			
+
+			<!-- Namespace Contents -->
+			
+
+			<!-- Method Quickref -->
+			
+			<div id="method-list-section" class="section">
+				<h3 class="section-header">Methods</h3>
+				<ul class="link-list">
+					
+					<li><a href="#method-c-new">::new</a></li>
+					
+					<li><a href="#method-i-get_cache_filename">#get_cache_filename</a></li>
+					
+					<li><a href="#method-i-get_from_memory_cache">#get_from_memory_cache</a></li>
+					
+					<li><a href="#method-i-restore_mem_copy">#restore_mem_copy</a></li>
+					
+					<li><a href="#method-i-restore_mem_share">#restore_mem_share</a></li>
+					
+					<li><a href="#method-i-restore_storable">#restore_storable</a></li>
+					
+					<li><a href="#method-i-save_mem_copy">#save_mem_copy</a></li>
+					
+					<li><a href="#method-i-save_mem_share">#save_mem_share</a></li>
+					
+					<li><a href="#method-i-save_storable">#save_storable</a></li>
+					
+				</ul>
+			</div>
+			
+
+			<!-- Included Modules -->
+			
+		</div>
+
+		<div id="project-metadata">
+			
+			
+
+			<div id="classindex-section" class="section project-section">
+				<h3 class="section-header">Class Index
+					<span class="search-toggle"><img src="../images/find.png"
+						height="16" width="16" alt="[+]"
+						title="show/hide quicksearch" /></span></h3>
+				<form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+				<fieldset>
+					<legend>Quicksearch</legend>
+					<input type="text" name="quicksearch" value=""
+						class="quicksearch-field" />
+				</fieldset>
+				</form>
+
+				<ul class="link-list">
+				
+					<li><a href="../XmlSimple.html">XmlSimple</a></li>
+				
+					<li><a href="../XmlSimple/Cache.html">XmlSimple::Cache</a></li>
+				
+				</ul>
+				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
+			</div>
+
+			
+		</div>
+	</div>
+
+	<div id="documentation">
+		<h1 class="class">XmlSimple::Cache</h1>
+
+		<div id="description">
+			<p>
+A simple cache for XML documents that were already transformed by xml_in.
+</p>
+
+		</div>
+
+		<!-- Constants -->
+		
+
+		<!-- Attributes -->
+		
+
+		<!-- Methods -->
+		
+		<div id="public-class-method-details" class="method-section section">
+			<h3 class="section-header">Public Class Methods</h3>
+
+		
+			<div id="new-method" class="method-detail ">
+				<a name="method-c-new"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">new</span><span
+						class="method-args">()</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Creates and initializes a new <a href="Cache.html">Cache</a> object.
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="new-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 20</span>
+20:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>
+21:       <span class="ruby-ivar">@mem_share_cache</span> = {}
+22:       <span class="ruby-ivar">@mem_copy_cache</span>  = {}
+23:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+		<div id="public-instance-method-details" class="method-section section">
+			<h3 class="section-header">Public Instance Methods</h3>
+
+		
+			<div id="restore-mem-copy-method" class="method-detail ">
+				<a name="method-i-restore_mem_copy"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">restore_mem_copy</span><span
+						class="method-args">(filename)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Restores a data structure from a memory cache. If restoring the data
+structure failed for any reason, nil will be returned.
+</p>
+<table>
+<tr><td valign="top">filename</td><td><p>
+Name of the file belonging to the data structure.
+</p>
+</td></tr>
+</table>
+					
+
+					
+					<div class="method-source-code"
+						id="restore-mem-copy-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 87</span>
+87:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">restore_mem_copy</span>(<span class="ruby-identifier">filename</span>)
+88:       <span class="ruby-identifier">data</span> = <span class="ruby-identifier">get_from_memory_cache</span>(<span class="ruby-identifier">filename</span>, <span class="ruby-ivar">@mem_share_cache</span>)
+89:       <span class="ruby-identifier">data</span> = <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">load</span>(<span class="ruby-identifier">data</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">nil?</span>
+90:       <span class="ruby-identifier">data</span>
+91:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="restore-mem-share-method" class="method-detail ">
+				<a name="method-i-restore_mem_share"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">restore_mem_share</span><span
+						class="method-args">(filename)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Restores a data structure from a shared memory cache. You should consider
+these elements as &#8220;read only&#8221;. If restoring the data structure
+failed for any reason, nil will be returned.
+</p>
+<table>
+<tr><td valign="top">filename</td><td><p>
+Name of the file belonging to the data structure.
+</p>
+</td></tr>
+</table>
+					
+
+					
+					<div class="method-source-code"
+						id="restore-mem-share-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 67</span>
+67:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">restore_mem_share</span>(<span class="ruby-identifier">filename</span>)
+68:       <span class="ruby-identifier">get_from_memory_cache</span>(<span class="ruby-identifier">filename</span>, <span class="ruby-ivar">@mem_share_cache</span>)
+69:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="restore-storable-method" class="method-detail ">
+				<a name="method-i-restore_storable"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">restore_storable</span><span
+						class="method-args">(filename)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Restores a data structure from a file. If restoring the data structure
+failed for any reason, nil will be returned.
+</p>
+<table>
+<tr><td valign="top">filename</td><td><p>
+Name of the file belonging to the data structure.
+</p>
+</td></tr>
+</table>
+					
+
+					
+					<div class="method-source-code"
+						id="restore-storable-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 41</span>
+41:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">restore_storable</span>(<span class="ruby-identifier">filename</span>)
+42:       <span class="ruby-identifier">cache_file</span> = <span class="ruby-identifier">get_cache_filename</span>(<span class="ruby-identifier">filename</span>)
+43:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">cache_file</span>)
+44:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">mtime</span>(<span class="ruby-identifier">cache_file</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">mtime</span>(<span class="ruby-identifier">filename</span>).<span class="ruby-identifier">to_i</span>
+45:       <span class="ruby-identifier">data</span> = <span class="ruby-keyword kw">nil</span>
+46:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">cache_file</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">data</span> = <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">load</span>(<span class="ruby-identifier">f</span>) }
+47:       <span class="ruby-identifier">data</span>
+48:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="save-mem-copy-method" class="method-detail ">
+				<a name="method-i-save_mem_copy"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">save_mem_copy</span><span
+						class="method-args">(data, filename)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Copies a data structure to a memory cache.
+</p>
+<table>
+<tr><td valign="top">data</td><td><p>
+Data structure to be copied.
+</p>
+</td></tr>
+<tr><td valign="top">filename</td><td><p>
+Name of the file belonging to the data structure.
+</p>
+</td></tr>
+</table>
+					
+
+					
+					<div class="method-source-code"
+						id="save-mem-copy-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 77</span>
+77:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">save_mem_copy</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">filename</span>)
+78:       <span class="ruby-ivar">@mem_share_cache</span>[<span class="ruby-identifier">filename</span>] = [<span class="ruby-constant">Time</span><span class="ruby-operator">::</span><span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">data</span>)]
+79:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="save-mem-share-method" class="method-detail ">
+				<a name="method-i-save_mem_share"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">save_mem_share</span><span
+						class="method-args">(data, filename)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Saves a data structure in a shared memory cache.
+</p>
+<table>
+<tr><td valign="top">data</td><td><p>
+Data structure to be saved.
+</p>
+</td></tr>
+<tr><td valign="top">filename</td><td><p>
+Name of the file belonging to the data structure.
+</p>
+</td></tr>
+</table>
+					
+
+					
+					<div class="method-source-code"
+						id="save-mem-share-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 56</span>
+56:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">save_mem_share</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">filename</span>)
+57:       <span class="ruby-ivar">@mem_share_cache</span>[<span class="ruby-identifier">filename</span>] = [<span class="ruby-constant">Time</span><span class="ruby-operator">::</span><span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-identifier">data</span>]
+58:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="save-storable-method" class="method-detail ">
+				<a name="method-i-save_storable"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">save_storable</span><span
+						class="method-args">(data, filename)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Saves a data structure into a file.
+</p>
+<table>
+<tr><td valign="top">data</td><td><p>
+Data structure to be saved.
+</p>
+</td></tr>
+<tr><td valign="top">filename</td><td><p>
+Name of the file belonging to the data structure.
+</p>
+</td></tr>
+</table>
+					
+
+					
+					<div class="method-source-code"
+						id="save-storable-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 31</span>
+31:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">save_storable</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">filename</span>)
+32:       <span class="ruby-identifier">cache_file</span> = <span class="ruby-identifier">get_cache_filename</span>(<span class="ruby-identifier">filename</span>)
+33:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">cache_file</span>, <span class="ruby-value str">&quot;w+&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">Marshal</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">f</span>) }
+34:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+		<div id="private-instance-method-details" class="method-section section">
+			<h3 class="section-header">Private Instance Methods</h3>
+
+		
+			<div id="get-cache-filename-method" class="method-detail ">
+				<a name="method-i-get_cache_filename"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">get_cache_filename</span><span
+						class="method-args">(filename)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Returns the &#8220;cache filename&#8221; belonging to a filename, i.e. the
+extension &#8217;.xml&#8217; in the original filename will be replaced by
+&#8217;.stor&#8217;. If filename does not have this extension,
+&#8217;.stor&#8217; will be appended.
+</p>
+<table>
+<tr><td valign="top">filename</td><td><p>
+Filename to get &#8220;cache filename&#8221; for.
+</p>
+</td></tr>
+</table>
+					
+
+					
+					<div class="method-source-code"
+						id="get-cache-filename-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 102</span>
+102:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_cache_filename</span>(<span class="ruby-identifier">filename</span>)
+103:       <span class="ruby-identifier">filename</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/(\.xml)?$/</span>, <span class="ruby-value str">'.stor'</span>)
+104:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+			<div id="get-from-memory-cache-method" class="method-detail ">
+				<a name="method-i-get_from_memory_cache"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">get_from_memory_cache</span><span
+						class="method-args">(filename, cache)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Returns a cache entry from a memory cache belonging to a certain filename.
+If no entry could be found for any reason, nil will be returned.
+</p>
+<table>
+<tr><td valign="top">filename</td><td><p>
+Name of the file the cache entry belongs to.
+</p>
+</td></tr>
+<tr><td valign="top">cache</td><td><p>
+Memory cache to get entry from.
+</p>
+</td></tr>
+</table>
+					
+
+					
+					<div class="method-source-code"
+						id="get-from-memory-cache-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 114</span>
+114:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_from_memory_cache</span>(<span class="ruby-identifier">filename</span>, <span class="ruby-identifier">cache</span>)
+115:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">cache</span>[<span class="ruby-identifier">filename</span>]
+116:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">cache</span>[<span class="ruby-identifier">filename</span>][<span class="ruby-value">0</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">mtime</span>(<span class="ruby-identifier">filename</span>).<span class="ruby-identifier">to_i</span>
+117:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">cache</span>[<span class="ruby-identifier">filename</span>][<span class="ruby-value">1</span>]
+118:     <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+
+				
+			</div>
+
+		
+		</div>
+	
+
+	</div>
+
+
+	<div id="rdoc-debugging-section-dump" class="debugging-section">
+	
+		<p>Disabled; run with --debug to generate this.</p>
+	
+	</div>
+
+	<div id="validator-badges">
+		<p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+		<p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+			Rdoc Generator</a> 1.1.6</small>.</p>
+	</div>
+
+</body>
+</html>
+

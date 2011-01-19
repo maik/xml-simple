@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>xml_out (XmlSimple)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/xmlsimple.rb, line 212</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">xml_out</span>(<span class="ruby-identifier">ref</span>, <span class="ruby-identifier">options</span> = <span class="ruby-keyword kw">nil</span>)
+    <span class="ruby-identifier">handle_options</span>(<span class="ruby-value str">'out'</span>, <span class="ruby-identifier">options</span>)
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Array</span>)
+      <span class="ruby-identifier">ref</span> = { <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'anonymoustag'</span>] =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ref</span> }
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'keeproot'</span>]
+      <span class="ruby-identifier">keys</span> = <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">keys</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+        <span class="ruby-identifier">ref</span> = <span class="ruby-identifier">ref</span>[<span class="ruby-identifier">keys</span>[<span class="ruby-value">0</span>]]
+        <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'rootname'</span>] = <span class="ruby-identifier">keys</span>[<span class="ruby-value">0</span>]
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">elsif</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'rootname'</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">''</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">instance_of?</span>(<span class="ruby-constant">Hash</span>)
+        <span class="ruby-identifier">refsave</span> = <span class="ruby-identifier">ref</span>
+        <span class="ruby-identifier">ref</span> = {}
+        <span class="ruby-identifier">refsave</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">scalar</span>(<span class="ruby-identifier">value</span>)
+            <span class="ruby-identifier">ref</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">value</span>
+          <span class="ruby-keyword kw">else</span>
+            <span class="ruby-identifier">ref</span>[<span class="ruby-identifier">key</span>] = [ <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span> ]
+          <span class="ruby-keyword kw">end</span>
+        }
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-ivar">@ancestors</span> = []
+    <span class="ruby-identifier">xml</span> = <span class="ruby-identifier">value_to_xml</span>(<span class="ruby-identifier">ref</span>, <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'rootname'</span>], <span class="ruby-value str">''</span>)
+    <span class="ruby-ivar">@ancestors</span> = <span class="ruby-keyword kw">nil</span>
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'xmldeclaration'</span>]
+      <span class="ruby-identifier">xml</span> = <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'xmldeclaration'</span>] <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">xml</span>
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-value str">'outputfile'</span>)
+      <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'outputfile'</span>].<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">IO</span>)
+        <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value str">'outputfile'</span>].<span class="ruby-identifier">write</span>(<span class="ruby-identifier">xml</span>)
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-ivar">@options</span>[<span class="ruby-value str">'outputfile'</span>], <span class="ruby-value str">&quot;w&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">xml</span>) }
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span>
+    <span class="ruby-identifier">xml</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

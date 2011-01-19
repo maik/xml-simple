@@ -1,0 +1,65 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>collapse (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 457</span>
+  <span class="kw">def</span> collapse(element)
+    result = @options[<span class="str">'noattr'</span>] ? {} : get_attributes(element)
+
+    <span class="kw">if</span> @options[<span class="str">'normalisespace'</span>] == 2
+      result.each { |k, v| result[k] = normalise_space(v) }
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> element.has_elements?
+      element.each_element { |child|
+        value = collapse(child)
+        <span class="kw">if</span> empty(value) &amp;&amp; (element.attributes.empty? || @options[<span class="str">'noattr'</span>])
+          <span class="kw">next</span> <span class="kw">if</span> @options.has_key?(<span class="str">'suppressempty'</span>) &amp;&amp; @options[<span class="str">'suppressempty'</span>] == <span class="kw">true</span>
+        <span class="kw">end</span>
+        result = merge(result, child.name, value)
+      }
+      <span class="kw">if</span> has_mixed_content?(element)
+        <span class="cmt"># normalisespace?</span>
+        content = element.texts.map { |x| x.to_s }
+        content = content[0] <span class="kw">if</span> content.size == 1
+        result[@options[<span class="str">'contentkey'</span>]] = content
+      <span class="kw">end</span>
+    <span class="kw">elsif</span> element.has_text? <span class="cmt"># i.e. it has only text.</span>
+      <span class="kw">return</span> collapse_text_node(result, element)
+    <span class="kw">end</span>
+
+    <span class="cmt"># Turn Arrays into Hashes if key fields present.</span>
+    count = fold_arrays(result)
+
+    <span class="cmt"># Disintermediate grouped tags.</span>
+    <span class="kw">if</span> @options.has_key?(<span class="str">'grouptags'</span>)
+      result.each { |key, value|
+        <span class="kw">next</span> <span class="kw">unless</span> (value.instance_of?(Hash) &amp;&amp; (value.size == 1))
+        child_key, child_value = value.to_a[0]
+        <span class="kw">if</span> @options[<span class="str">'grouptags'</span>][key] == child_key
+          result[key] = child_value
+        <span class="kw">end</span>
+      }
+    <span class="kw">end</span>
+    
+    <span class="cmt"># Fold Hases containing a single anonymous Array up into just the Array.</span>
+    <span class="kw">if</span> count == 1 
+      anonymoustag = @options[<span class="str">'anonymoustag'</span>]
+      <span class="kw">if</span> result.has_key?(anonymoustag) &amp;&amp; result[anonymoustag].instance_of?(Array)
+        <span class="kw">return</span> result[anonymoustag]
+      <span class="kw">end</span>
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> result.empty? &amp;&amp; @options.has_key?(<span class="str">'suppressempty'</span>)
+      <span class="kw">return</span> @options[<span class="str">'suppressempty'</span>] == <span class="str">''</span> ? <span class="str">''</span> : <span class="kw">nil</span>
+    <span class="kw">end</span>
+
+    result
+  <span class="kw">end</span></pre>
+</body>
+</html>

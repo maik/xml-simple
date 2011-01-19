@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<a>
+  <b>
+    <c>Eins</c>
+    <c>Eins</c>
+    <c>Zwei</c>
+  </b>
+  <b>
+    <c>Drei</c>
+    <c>Zwei</c>
+    <c>
+      <d>yo</d>
+    </c>
+  </b>
+  <xyz>Hallo</xyz>
+  <abc>
+    <z>ZZZ</z>
+    <z/>
+    <z> </z>
+  </abc>
+  <att test='42' />
+  <att2 test='4711'>CONTENT</att2>
+  <element att="1">one</element>
+  <element att="2">two</element>
+  <element att="3">three</element>
+</a>
+

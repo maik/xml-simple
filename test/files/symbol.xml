@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<atts>
+  <x>Hello</x>
+  <y>World</y>
+  <z>
+    <inner>Inner</inner>
+  </z>
+</atts>
+

@@ -1,0 +1,22 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>escape_value (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 881</span>
+  <span class="kw">def</span> escape_value(data)
+    <span class="kw">return</span> data <span class="kw">if</span> data.nil? || data == <span class="str">''</span>
+    result = data.dup
+    result.gsub!(<span class="str">'&amp;'</span>, <span class="str">'&amp;amp;'</span>)
+    result.gsub!(<span class="str">'&lt;'</span>, <span class="str">'&amp;lt;'</span>)
+    result.gsub!(<span class="str">'&gt;'</span>, <span class="str">'&amp;gt;'</span>)
+    result.gsub!(<span class="str">'&quot;'</span>, <span class="str">'&amp;quot;'</span>)
+    result.gsub!(<span class="str">&quot;'&quot;</span>, <span class="str">'&amp;apos;'</span>)
+    result
+  <span class="kw">end</span></pre>
+</body>
+</html>

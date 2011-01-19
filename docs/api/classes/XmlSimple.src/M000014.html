@@ -1,0 +1,46 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>merge (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 640</span>
+  <span class="kw">def</span> merge(hash, key, value)
+    <span class="kw">if</span> value.instance_of?(String)
+      value = normalise_space(value) <span class="kw">if</span> @options[<span class="str">'normalisespace'</span>] == 2
+
+      <span class="cmt"># do variable substitutions</span>
+      <span class="kw">unless</span> @_var_values.nil? || @_var_values.empty?
+        value.gsub!(<span class="re">/\$\{(\w+)\}/</span>) { |x| get_var($1) }
+      <span class="kw">end</span>
+      
+      <span class="cmt"># look for variable definitions</span>
+      <span class="kw">if</span> @options.has_key?(<span class="str">'varattr'</span>)
+        varattr = @options[<span class="str">'varattr'</span>]
+        <span class="kw">if</span> hash.has_key?(varattr)
+          set_var(hash[varattr], value)
+        <span class="kw">end</span>
+      <span class="kw">end</span>
+    <span class="kw">end</span>
+    <span class="kw">if</span> hash.has_key?(key)
+      <span class="kw">if</span> hash[key].instance_of?(Array)
+        hash[key] &lt;&lt; value
+      <span class="kw">else</span>
+        hash[key] = [ hash[key], value ]
+      <span class="kw">end</span>
+    <span class="kw">elsif</span> value.instance_of?(Array) <span class="cmt"># Handle anonymous arrays.</span>
+      hash[key] = [ value ]
+    <span class="kw">else</span>
+      <span class="kw">if</span> force_array?(key)
+        hash[key] = [ value ]
+      <span class="kw">else</span>
+        hash[key] = value
+      <span class="kw">end</span>
+    <span class="kw">end</span>
+    hash
+  <span class="kw">end</span></pre>
+</body>
+</html>

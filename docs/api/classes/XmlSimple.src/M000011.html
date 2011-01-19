@@ -1,0 +1,33 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>fold_array (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 564</span>
+  <span class="kw">def</span> fold_array(array)
+    hash = Hash.new
+    array.each { |x|
+      <span class="kw">return</span> array <span class="kw">unless</span> x.instance_of?(Hash)
+      key_matched = <span class="kw">false</span>
+      @options[<span class="str">'keyattr'</span>].each { |key|
+        <span class="kw">if</span> x.has_key?(key)
+          key_matched = <span class="kw">true</span>
+          value = x[key]
+          <span class="kw">return</span> array <span class="kw">if</span> value.instance_of?(Hash) || value.instance_of?(Array)
+          value = normalise_space(value) <span class="kw">if</span> @options[<span class="str">'normalisespace'</span>] == 1
+          x.delete(key)
+          hash[value] = x
+          <span class="kw">break</span>
+        <span class="kw">end</span>
+      }
+      <span class="kw">return</span> array <span class="kw">unless</span> key_matched
+    }
+    hash = collapse_content(hash) <span class="kw">if</span> @options[<span class="str">'collapseagain'</span>]
+    hash
+  <span class="kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,29 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>fold_arrays (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 540</span>
+  <span class="kw">def</span> fold_arrays(hash)
+    fold_amount = 0
+    keyattr = @options[<span class="str">'keyattr'</span>]
+    <span class="kw">if</span> (keyattr.instance_of?(Array) || keyattr.instance_of?(Hash))
+      hash.each { |key, value|
+        <span class="kw">if</span> value.instance_of?(Array)
+          <span class="kw">if</span> keyattr.instance_of?(Array)
+            hash[key] = fold_array(value)
+          <span class="kw">else</span>
+            hash[key] = fold_array_by_name(key, value)
+          <span class="kw">end</span>
+          fold_amount += 1
+        <span class="kw">end</span>
+      }
+    <span class="kw">end</span>
+    fold_amount
+  <span class="kw">end</span></pre>
+</body>
+</html>

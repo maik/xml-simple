@@ -1,0 +1,23 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>force_array? (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 677</span>
+  <span class="kw">def</span> force_array?(key)
+    <span class="kw">return</span> <span class="kw">false</span> <span class="kw">if</span> key == @options[<span class="str">'contentkey'</span>]
+    <span class="kw">return</span> <span class="kw">true</span> <span class="kw">if</span> @options[<span class="str">'forcearray'</span>] == <span class="kw">true</span>
+    forcearray = @options[<span class="str">'forcearray'</span>]
+    <span class="kw">if</span> forcearray.instance_of?(Hash)
+      <span class="kw">return</span> <span class="kw">true</span> <span class="kw">if</span> forcearray.has_key?(key) 
+      <span class="kw">return</span> <span class="kw">false</span> <span class="kw">unless</span> forcearray.has_key?(<span class="str">'_regex'</span>)
+      forcearray[<span class="str">'_regex'</span>].each { |x| <span class="kw">return</span> <span class="kw">true</span> <span class="kw">if</span> key =~ x }
+    <span class="kw">end</span>
+    <span class="kw">return</span> <span class="kw">false</span>
+  <span class="kw">end</span></pre>
+</body>
+</html>

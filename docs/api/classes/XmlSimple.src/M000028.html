@@ -1,0 +1,30 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>find_xml_file (XmlSimple)</title>
+<link rel=StyleSheet href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<pre><span class="cmt"># File lib/xmlsimple.rb, line 961</span>
+  <span class="kw">def</span> find_xml_file(file, searchpath)
+    filename = File::basename(file)
+
+    <span class="kw">if</span> filename != file
+      <span class="kw">return</span> file <span class="kw">if</span> File::file?(file)
+    <span class="kw">else</span>
+      searchpath.each { |path|
+        full_path = File::join(path, filename)
+        <span class="kw">return</span> full_path <span class="kw">if</span> File::file?(full_path)
+      }
+    <span class="kw">end</span>
+
+    <span class="kw">if</span> searchpath.empty?
+      <span class="kw">return</span> file <span class="kw">if</span> File::file?(file)
+      raise ArgumentError, &quot;File does not exist: #{file}.&quot;
+    <span class="kw">end</span>
+    raise ArgumentError, &quot;Could not find &lt;#{filename}&gt; in &lt;#{searchpath.join(':')}&gt;&quot;
+  <span class="kw">end</span></pre>
+</body>
+</html>
