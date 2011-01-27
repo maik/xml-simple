@@ -299,8 +299,7 @@ class XmlSimple
     return nil if options.nil?
     result = Hash.new
     options.each { |key, value|
-      lkey = key.downcase
-      lkey.gsub!(/_/, '')
+      lkey = key.to_s.downcase.gsub(/_/, '')
       if !known_options.member?(lkey)
         raise ArgumentError, "Unrecognised option: #{lkey}."
       end
