@@ -1,3 +1,7 @@
+Version 1.0.14:
+  - XmlSimple.xml_in now supports symbols for option names (fix provided
+    by Bruce Adams).
+
 Version 1.0.13:
   - Fixed a bug that led to problems when outputting symbols on Ruby 1.8.x
     (reported by Chris St. John).
