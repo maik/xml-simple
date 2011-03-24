@@ -800,9 +800,12 @@ class XmlSimple
           end
 
           # Check for the '@' attribute prefix to allow separation of attributes and elements
-          if @options['noattr'] ||
-             (@options['attrprefix'] && !(key =~ /^@(.*)/)) ||
-             !scalar(value)
+             
+          if (@options['noattr'] ||
+              (@options['attrprefix'] && !(key =~ /^@(.*)/)) ||
+              !scalar(value)
+             ) &&
+             key != @options['contentkey']
             nested << value_to_xml(value, key, indent + @options['indent'])
           else
             value = value.to_s
