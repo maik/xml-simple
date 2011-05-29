@@ -718,7 +718,7 @@ class XmlSimple
   #   Document element to be checked.
   def has_mixed_content?(element)
     if element.has_text? && element.has_elements?
-      return true if element.texts.join('') !~ /^\s*$/s
+      return true if element.texts.join('') !~ /^\s*$/
     end
     false
   end
