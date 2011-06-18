@@ -3,7 +3,7 @@ $: << File.join(File.dirname(__FILE__), '../lib')
 require 'test/unit'
 require 'xmlsimple'
 
-class TC_File_In < Test::Unit::TestCase # :nodoc:  
+class TC_File_In < Test::Unit::TestCase # :nodoc:
   def test_original
     original_pod = File.join(File.dirname(__FILE__), 'files', 'original_pod.xml')
     config = XmlSimple.new
@@ -401,6 +401,23 @@ class TC_File_In < Test::Unit::TestCase # :nodoc:
       }
     }
     assert_equal(expected, config.xml_in(keyattr_file, { 'key_attr' => { 'user' => '-login' } }))
+  end
+
+  def test_conversions
+    conv_file = File.join(File.dirname(__FILE__), 'files', 'conversions.xml')
+    conversions = {
+      /^total|failed$/ => lambda{|v| v.to_i},
+      /^status$/ => lambda {|v| v.downcase}
+    }
+
+    expected = {
+      'status' => 'ok',
+      'total' => 10,
+      'failed' => 2
+    }
+
+    result = XmlSimple.xml_in(conv_file, :conversions => conversions, :forcearray => false)
+    assert_equal(expected, result)
   end
 end
 
