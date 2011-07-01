@@ -918,6 +918,48 @@ p result
         If you want some other string (for example to declare an encoding
         value), set the value of this option to the complete string you
         require.
+      <h3>conversions =&gt; { regex =&gt; lambda } (in) (handy)</h3>
+      <p>
+      When importing XML documents it's often necessary to filter or transform certain elements or attributes.
+      The <em>conversions</em> option helps you to do this. It expects a Hash object where the
+      keys are regular expressions identifying element or attribute names. The values are lambda functions
+      that will be applied to the matching elements.
+      </p>
+      <p>
+        Let's say we have a file named status.xml containing the following document:
+      </p>
+<pre>
+&lt;result&gt;
+  &lt;status&gt;OK&lt;/status&gt;
+  &lt;total&gt;10&lt;/total&gt;
+  &lt;failed&gt;2&lt;/failed&gt;
+&lt;/result&gt;
+</pre>
+      <p>
+        The following statement
+      </p>
+<pre>
+  conversions = {
+    /^total|failed$/ =&gt; lambda { |v| v.to_i },
+    /^status$/       =&gt; lambda { |v| v.downcase }
+  }
+
+  p XmlSimple.xml_in(
+    'status.xml',
+    :conversions =&gt; conversions,
+    :forcearray  =&gt; false
+  )
+</pre>
+      <p>
+        produces the following output:
+      </p>
+<pre>
+{
+  'status' =&gt; 'ok',
+  'total'  =&gt; 10,
+  'failed' =&gt; 2
+}
+</pre>
       <h2><a name="OOInterface">Optional OO Interface</a></h2>
       <p>
       The procedural interface is both simple and convenient, but if you have
