@@ -126,7 +126,7 @@ class XmlSimple
   # defaults::
   #   Default values for options.
   def initialize(defaults = nil)
-    unless defaults.nil? || defaults.instance_of?(Hash)
+    unless defaults.nil? || defaults.is_a?(Hash)
       raise ArgumentError, "Options have to be a Hash."
     end
     @default_options = normalize_option_names(defaults, (KNOWN_OPTIONS['in'] + KNOWN_OPTIONS['out']).uniq)
@@ -159,7 +159,7 @@ class XmlSimple
       @options['searchpath'].unshift(directory) unless directory.nil?
     end
 
-    if string.instance_of?(String)
+    if string.is_a?(String)
       if string =~ /<.*?>/m
         @doc = parse(string)
       elsif string == '-'
@@ -211,7 +211,7 @@ class XmlSimple
   #   Options to be used.
   def xml_out(ref, options = nil)
     handle_options('out', options)
-    if ref.instance_of?(Array)
+    if ref.is_a?(Array)
       ref = { @options['anonymoustag'] => ref }
     end
 
@@ -222,7 +222,7 @@ class XmlSimple
         @options['rootname'] = keys[0]
       end
     elsif @options['rootname'] == ''
-      if ref.instance_of?(Hash)
+      if ref.is_a?(Hash)
         refsave = ref
         ref = {}
         refsave.each { |key, value|
@@ -318,7 +318,7 @@ class XmlSimple
   def handle_options(direction, options)
     @options = options || Hash.new
 
-    raise ArgumentError, "Options must be a Hash!" unless @options.instance_of?(Hash)
+    raise ArgumentError, "Options must be a Hash!" unless @options.is_a?(Hash)
 
     unless KNOWN_OPTIONS.has_key?(direction)
       raise ArgumentError, "Unknown direction: <#{direction}>."
@@ -368,7 +368,7 @@ class XmlSimple
     @options['normalisespace'] = 0 if @options['normalisespace'].nil?
 
     if @options.has_key?('searchpath')
-      unless @options['searchpath'].instance_of?(Array)
+      unless @options['searchpath'].is_a?(Array)
         @options['searchpath'] = [ @options['searchpath'] ]
       end
     else
@@ -393,13 +393,13 @@ class XmlSimple
       if !scalar(@options['keyattr'])
         # Convert keyattr => { elem => '+attr' }
         #      to keyattr => { elem => ['attr', '+'] }
-        if @options['keyattr'].instance_of?(Hash)
+        if @options['keyattr'].is_a?(Hash)
           @options['keyattr'].each { |key, value|
             if value =~ /^([-+])?(.*)$/
               @options['keyattr'][key] = [$2, $1 ? $1 : '']
             end
           }
-        elsif !@options['keyattr'].instance_of?(Array)
+        elsif !@options['keyattr'].is_a?(Array)
           raise ArgumentError, "'keyattr' must be String, Hash, or Array!"
         end
       else
@@ -410,17 +410,17 @@ class XmlSimple
     end
 
     if @options.has_key?('forcearray')
-      if @options['forcearray'].instance_of?(Regexp)
+      if @options['forcearray'].is_a?(Regexp)
         @options['forcearray'] = [ @options['forcearray'] ]
       end
 
-      if @options['forcearray'].instance_of?(Array)
+      if @options['forcearray'].is_a?(Array)
         force_list = @options['forcearray']
         unless force_list.empty?
           @options['forcearray'] = {}
           force_list.each { |tag|
-            if tag.instance_of?(Regexp)
-              unless @options['forcearray']['_regex'].instance_of?(Array)
+            if tag.is_a?(Regexp)
+              unless @options['forcearray']['_regex'].is_a?(Array)
                 @options['forcearray']['_regex'] = []
               end
               @options['forcearray']['_regex'] << tag
@@ -438,11 +438,11 @@ class XmlSimple
       @options['forcearray'] = DEF_FORCE_ARRAY
     end
 
-    if @options.has_key?('grouptags') && !@options['grouptags'].instance_of?(Hash)
+    if @options.has_key?('grouptags') && !@options['grouptags'].is_a?(Hash)
       raise ArgumentError, "Illegal value for 'GroupTags' option - expected a Hash."
     end
 
-    if @options.has_key?('variables') && !@options['variables'].instance_of?(Hash)
+    if @options.has_key?('variables') && !@options['variables'].is_a?(Hash)
       raise ArgumentError, "Illegal value for 'Variables' option - expected a Hash."
     end
 
@@ -488,7 +488,7 @@ class XmlSimple
     # Disintermediate grouped tags.
     if @options.has_key?('grouptags')
       result.each { |key, value|
-        next unless (value.instance_of?(Hash) && (value.size == 1))
+        next unless (value.is_a?(Hash) && (value.size == 1))
         child_key, child_value = value.to_a[0]
         if @options['grouptags'][key] == child_key
           result[key] = child_value
@@ -499,7 +499,7 @@ class XmlSimple
     # Fold Hashes containing a single anonymous Array up into just the Array.
     if count == 1
       anonymoustag = @options['anonymoustag']
-      if result.has_key?(anonymoustag) && result[anonymoustag].instance_of?(Array)
+      if result.has_key?(anonymoustag) && result[anonymoustag].is_a?(Array)
         return result[anonymoustag]
       end
     end
@@ -543,10 +543,10 @@ class XmlSimple
   def fold_arrays(hash)
     fold_amount = 0
     keyattr = @options['keyattr']
-    if (keyattr.instance_of?(Array) || keyattr.instance_of?(Hash))
+    if (keyattr.is_a?(Array) || keyattr.is_a?(Hash))
       hash.each { |key, value|
-        if value.instance_of?(Array)
-          if keyattr.instance_of?(Array)
+        if value.is_a?(Array)
+          if keyattr.is_a?(Array)
             hash[key] = fold_array(value)
           else
             hash[key] = fold_array_by_name(key, value)
@@ -567,13 +567,13 @@ class XmlSimple
   def fold_array(array)
     hash = Hash.new
     array.each { |x|
-      return array unless x.instance_of?(Hash)
+      return array unless x.is_a?(Hash)
       key_matched = false
       @options['keyattr'].each { |key|
         if x.has_key?(key)
           key_matched = true
           value = x[key]
-          return array if value.instance_of?(Hash) || value.instance_of?(Array)
+          return array if value.is_a?(Hash) || value.is_a?(Array)
           value = normalise_space(value) if @options['normalisespace'] == 1
           x.delete(key)
           hash[value] = x
@@ -600,9 +600,9 @@ class XmlSimple
 
     hash = Hash.new
     array.each { |x|
-      if x.instance_of?(Hash) && x.has_key?(key)
+      if x.is_a?(Hash) && x.has_key?(key)
         value = x[key]
-        return array if value.instance_of?(Hash) || value.instance_of?(Array)
+        return array if value.is_a?(Hash) || value.is_a?(Array)
         value = normalise_space(value) if @options['normalisespace'] == 1
         hash[value] = x
         hash[value]["-#{key}"] = hash[value][key] if flag == '-'
@@ -623,7 +623,7 @@ class XmlSimple
   def collapse_content(hash)
     content_key = @options['contentkey']
     hash.each_value { |value|
-      return hash unless value.instance_of?(Hash) && value.size == 1 && value.has_key?(content_key)
+      return hash unless value.is_a?(Hash) && value.size == 1 && value.has_key?(content_key)
       hash.each_key { |key| hash[key] = hash[key][content_key] }
     }
     hash
@@ -641,7 +641,7 @@ class XmlSimple
   # value::
   #   Value to be associated with key.
   def merge(hash, key, value)
-    if value.instance_of?(String)
+    if value.is_a?(String)
       value = normalise_space(value) if @options['normalisespace'] == 2
 
       if conv = @options['conversions'] and conv = conv.find {|c,_| c.match(key)} and conv = conv.at(1)
@@ -670,12 +670,12 @@ class XmlSimple
     end
 
     if hash.has_key?(key)
-      if hash[key].instance_of?(Array)
+      if hash[key].is_a?(Array)
         hash[key] << value
       else
         hash[key] = [ hash[key], value ]
       end
-    elsif value.instance_of?(Array) # Handle anonymous arrays.
+    elsif value.is_a?(Array) # Handle anonymous arrays.
       hash[key] = [ value ]
     else
       if force_array?(key)
@@ -693,7 +693,7 @@ class XmlSimple
     return false if key == @options['contentkey']
     return true if @options['forcearray'] == true
     forcearray = @options['forcearray']
-    if forcearray.instance_of?(Hash)
+    if forcearray.is_a?(Hash)
       return true if forcearray.has_key?(key)
       return false unless forcearray.has_key?('_regex')
       forcearray['_regex'].each { |x| return true if key =~ x }
@@ -772,12 +772,12 @@ class XmlSimple
     end
 
     # Unfold hash to array if possible.
-    if ref.instance_of?(Hash) && !ref.empty? && !@options['keyattr'].empty? && indent != ''
+    if ref.is_a?(Hash) && !ref.empty? && !@options['keyattr'].empty? && indent != ''
       ref = hash_to_array(name, ref)
     end
 
     result = []
-    if ref.instance_of?(Hash)
+    if ref.is_a?(Hash)
       # Reintermediate grouped values if applicable.
       if @options.has_key?('grouptags')
         ref.each { |key, value|
@@ -844,13 +844,13 @@ class XmlSimple
       else
         result << ' />' << nl
       end
-    elsif ref.instance_of?(Array)
+    elsif ref.is_a?(Array)
       ref.each { |value|
         if scalar(value)
           result << indent << '<' << name << '>'
           result << (@options['noescape'] ? value.to_s : escape_value(value.to_s))
           result << '</' << name << '>' << nl
-        elsif value.instance_of?(Hash)
+        elsif value.is_a?(Hash)
           result << value_to_xml(value, name, indent)
         else
           result << indent << '<' << name << '>' << nl
@@ -872,7 +872,7 @@ class XmlSimple
   # value::
   #   Value to be checked.
   def scalar(value)
-    return false if value.instance_of?(Hash) || value.instance_of?(Array)
+    return false if value.is_a?(Hash) || value.is_a?(Array)
     return true
   end
 
@@ -887,9 +887,9 @@ class XmlSimple
   def hash_to_array(parent, hashref)
     arrayref = []
     hashref.each { |key, value|
-      return hashref unless value.instance_of?(Hash)
+      return hashref unless value.is_a?(Hash)
 
-      if @options['keyattr'].instance_of?(Hash)
+      if @options['keyattr'].is_a?(Hash)
         return hashref unless @options['keyattr'].has_key?(parent)
         arrayref << { @options['keyattr'][parent][0] => key }.update(value)
       else
@@ -941,11 +941,11 @@ class XmlSimple
   # default::
   #   Value to be returned, if node could not be converted.
   def node_to_text(node, default = nil)
-    if node.instance_of?(REXML::Element)
+    if node.is_a?(REXML::Element)
       node.texts.map { |t| t.value }.join('')
-    elsif node.instance_of?(REXML::Attribute)
+    elsif node.is_a?(REXML::Attribute)
       node.value.nil? ? default : node.value.strip
-    elsif node.instance_of?(REXML::Text)
+    elsif node.is_a?(REXML::Text)
       node.value.strip
     else
       default
