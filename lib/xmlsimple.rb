@@ -11,7 +11,7 @@ require 'stringio'
 class XmlSimple
   include REXML
 
-  @@VERSION = '1.1.0'
+  @@VERSION = '1.1.2'
 
   # A simple cache for XML documents that were already transformed
   # by xml_in.
@@ -185,10 +185,10 @@ class XmlSimple
 
         @doc = load_xml_file(filename)
       end
-    elsif string.kind_of?(IO) || string.kind_of?(StringIO) || string.kind_of?(Zlib::GzipReader)
+    elsif string.respond_to?(:read)
       @doc = parse(string.read)
     else
-      raise ArgumentError, "Could not parse object of type: <#{string.type}>."
+      raise ArgumentError, "Could not parse object of type: <#{string.class}>."
     end
 
     result = collapse(@doc.root)
