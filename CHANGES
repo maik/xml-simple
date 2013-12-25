@@ -1,3 +1,6 @@
+Version 1.1.3:
+  - Cleaned up gemspec.
+
 Version 1.0.14:
   - XmlSimple.xml_in now supports symbols for option names (fix provided
     by Bruce Adams).
