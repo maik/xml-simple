@@ -11,7 +11,7 @@ require 'stringio'
 class XmlSimple
   include REXML
 
-  @@VERSION = '1.1.3'
+  @@VERSION = '1.1.4'
 
   # A simple cache for XML documents that were already transformed
   # by xml_in.
@@ -721,10 +721,9 @@ class XmlSimple
   # element::
   #   Document element to be checked.
   def has_mixed_content?(element)
-    if element.has_text? && element.has_elements?
-      return true if element.texts.join('') !~ /^\s*$/
-    end
-    false
+    element.has_text? &&
+      element.has_elements? &&
+      !element.texts.join('').strip.empty?
   end
 
   # Called when a variable definition is encountered in the XML.
