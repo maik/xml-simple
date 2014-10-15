@@ -15,7 +15,7 @@
       <h2>Introduction</h2>
       <p>
       Class <em>XmlSimple</em> offers an easy API to read and write XML.
-      It is a Ruby translation of Grant McLean's 
+      It is a Ruby translation of Grant McLean's
       <a href="http://www.cpan.org/modules/by-module/XML/GRANTM/">Perl module XML::Simple</a>.
       Please note, that this tutorial was originally written by Grant
       McLean. I have only converted it to HTML and adjusted it for the
@@ -333,7 +333,7 @@
       script is run, updates to the source XML file may appear to be
       ignored.
       </p>
-      
+
       <h3>ContentKey =&gt; 'keyname' (in + out) (seldom used)</h3>
       <p>
       When text content is parsed to a hash value, this option let's you
@@ -360,7 +360,7 @@
       &lt;item name="one"&gt;First&lt;item&gt;
       &lt;item name="two"&gt;Second&lt;item&gt;
     &lt;opt&gt;), {
-  'KeyAttr'    =&gt; { 'item' =&gt; 'name' }, 
+  'KeyAttr'    =&gt; { 'item' =&gt; 'name' },
   'ForceArray' =&gt; [ 'item' ],
   'ContentKey' =&gt; '-content'
 })</pre>
@@ -387,7 +387,7 @@
       represented as arrays even when there is only one. For example, with
       'ForceArray' enabled, this XML:
       </p>
-<pre>                
+<pre>
 &lt;opt&gt;
   &lt;name&gt;value&lt;/name&gt;
 &lt;/opt&gt;</pre>
@@ -415,7 +415,7 @@
       <p>
       The option is <em>true</em> by default.
       </p>
-      
+
       <h3>ForceArray =&gt; [ name(s) ] (in) (IMPORTANT!)</h3>
       <p>
       This alternative form of the 'ForceArray' option allows you to
@@ -459,7 +459,7 @@
       'x' =&gt; 'text1',
       'y' =&gt; { 'a' =&gt; '2', 'content' =&gt; 'text2' }
     }</pre>
-    
+
       <h3>GroupTags =&gt; { grouping tag =&gt; grouped tag } (in + out) (handy)</h3>
       <p>
       You can use this option to eliminate extra levels of indirection in
@@ -501,7 +501,7 @@
       in all places that the 'grouping tag' name occurs - you probably
       don't want to use the same name for elements as well as attributes.
       </p>
-      
+
       <h3>Indent =&gt; 'string' (out) (seldom used)</h3>
       <p>
       By default <em>xml_out</em>'s pretty printing mode indents the output
@@ -511,7 +511,7 @@
       <p>
       If the 'NoIndent' option is set, 'Indent' will be ignored.
       </p>
-      
+
       <h3>KeepRoot =&gt; true | false (in + out) (handy)</h3>
       <p>
       In its attempt to return a data structure free of superfluous detail
@@ -531,7 +531,7 @@
       <em>xml_out</em> that the data structure already contains a root element name
       and it is not necessary to add another.
       </p>
-      
+
       <h3>KeyAttr =&gt; [ list ] (in + out) (IMPORTANT!)</h3>
       <p>
       This option controls the 'array folding' feature which translates
@@ -588,7 +588,7 @@
       The default value for 'KeyAttr' is <em>[]</em>, i.e. the array folding feature
       is disabled.
       </p>
-      
+
       <h3>KeyAttr =&gt; { list } (in + out) (IMPORTANT!)</h3>
       <p>
       This alternative method of specifiying the key attributes allows
@@ -661,7 +661,7 @@
       As described earlier, <em>xml_out</em> will ignore hash keys starting with a
       '-'.
       </p>
-      
+
       <h3>AttrPrefix =&gt; true | false (in + out) (handy)</h3>
       <p>
       XmlSimple treats attributes and elements equally and there is no way to
@@ -674,13 +674,13 @@ xml_str = &lt;&lt;XML_STR
 &lt;Customer id="12253"&gt;
   &lt;first_name&gt;Joe&lt;/first_name&gt;
   &lt;last_name&gt;Joe&lt;/last_name&gt;
-  &lt;Address type="home"&gt; 
+  &lt;Address type="home"&gt;
     &lt;line1&gt;211 Over There&lt;/line1&gt;
     &lt;city&gt;Jacksonville&lt;/city&gt;
     &lt;state&gt;FL&lt;/state&gt;
     &lt;zip_code&gt;11234&lt;/zip_code&gt;
   &lt;/Address&gt;
-  &lt;Address type="postal"&gt; 
+  &lt;Address type="postal"&gt;
     &lt;line1&gt;3535 Head Office&lt;/line1&gt;
     &lt;city&gt;Jacksonville&lt;/city&gt;
     &lt;state&gt;FL&lt;/state&gt;
@@ -756,7 +756,7 @@ p result
       <p>
       When used with <em>xml_in</em>, any attributes in the XML will be ignored.
       </p>
-      
+
       <h3>NormaliseSpace =&gt; 0 | 1 | 2 (in) (handy)</h3>
       <p>
       This option controls how whitespace in text content is handled.
@@ -777,7 +777,7 @@ p result
       Note: you can spell this option with a 'z' if that is more natural
       for you.
       </p>
-      
+
       <h3>NoEscape =&gt; true | false (out) (seldom used)</h3>
       <p>
       By default, <em>xml_out</em> will translate the characters &lt;,
@@ -786,7 +786,7 @@ p result
       option to suppress escaping (presumably because you've already escaped
       the data in some more sophisticated manner).
       </p>
-      
+
       <h3>NoIndent =&gt; true | false (out) (seldom used)</h3>
       <p>
       Set this option to <em>true</em> to disable <em>xml_out</em>'s default 'pretty
@@ -820,7 +820,27 @@ p result
     :z =&gt; [ { :inner =&gt; ["Inner"] } ]
   }
 </pre>
-              
+
+      <h3>AttrToSymbol =&gt; true | false (in) (handy)</h3>
+      <p>
+      If set to <em>true</em> (default is <em>false</em>) all keys are turned into
+      symbols, i.e. the following snippet
+      </p>
+<pre>
+  doc = &lt;&lt;-DOC
+  &lt;atts&gt;
+    &lt;msg text=&quot;Hello, world!&quot; /&gt;
+  &lt;/atts&gt;
+  DOC
+  p XmlSimple.xml_in(doc, 'AttrToSymbol' =&gt; true)
+</pre>
+      <p>produces:</p>
+<pre>
+  {
+    "msg" =&gt; [ { :text =&gt; "Hello, world!" } ]
+  }
+</pre>
+
       <h3>OutputFile =&gt; &lt;file specifier&gt; (out) (handy)</h3>
       <p>
       The default behavior of <em>xml_out</em> is to return the XML as a
@@ -1057,7 +1077,7 @@ p result
       <p>
       Nested elements with a recognised key attribute are transformed (folded)
       from an array into a hash keyed on the value of that attribute, i.e.
-      calling <em>xml_in</em> with the 'KeyAttr' set to <em>[key]</em> will 
+      calling <em>xml_in</em> with the 'KeyAttr' set to <em>[key]</em> will
       transform
       </p>
 <pre>
@@ -1177,42 +1197,42 @@ p result
       </p>
       <h2>FAQ</h2>
       <div>
-		Question: if I include XmlSimple in a rails app and run for example
-		'rake' in the root of the app, I always get the following warnings:
+    Question: if I include XmlSimple in a rails app and run for example
+    'rake' in the root of the app, I always get the following warnings:
 
     <pre>
-	/usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:275:
-	warning: already initialized constant KNOWN_OPTIONS
-	
-	/usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:280:
-	warning: already initialized constant DEF_KEY_ATTRIBUTES
-	
-	/usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:281:
-	warning: already initialized constant DEF_ROOT_NAME
-	
-	/usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:282:
-	warning: already initialized constant DEF_CONTENT_KEY
-	
-	/usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:283:
-	warning: already initialized constant DEF_XML_DECLARATION
-	
-	/usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:284:
-	warning: already initialized constant DEF_ANONYMOUS_TAG
-	
-	/usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:285:
-	warning: already initialized constant DEF_FORCE_ARRAY
-	
-	/usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:286:
-	warning: already initialized constant DEF_INDENTATION
-	
-	/usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:287:
-	warning: already initialized constant DEF_KEY_TO_SYMBOL</pre>
-	  </div>
+  /usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:275:
+  warning: already initialized constant KNOWN_OPTIONS
+
+  /usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:280:
+  warning: already initialized constant DEF_KEY_ATTRIBUTES
+
+  /usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:281:
+  warning: already initialized constant DEF_ROOT_NAME
+
+  /usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:282:
+  warning: already initialized constant DEF_CONTENT_KEY
+
+  /usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:283:
+  warning: already initialized constant DEF_XML_DECLARATION
+
+  /usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:284:
+  warning: already initialized constant DEF_ANONYMOUS_TAG
+
+  /usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:285:
+  warning: already initialized constant DEF_FORCE_ARRAY
+
+  /usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:286:
+  warning: already initialized constant DEF_INDENTATION
+
+  /usr/local/lib/ruby/gems/1.8/gems/xml-simple-1.0.10/lib/xmlsimple.rb:287:
+  warning: already initialized constant DEF_KEY_TO_SYMBOL</pre>
+    </div>
 
       <div>
-		<p>Answer: The reason for this is, that you're using XmlSimple explicitly in a rails app. XmlSimple is part of rails (you can find it in ./actionpack-1.12.5/lib/action_controller/vendor/xml_simple.rb). Unfortunately, the library is named "xml_simple.rb" and not "xmlsimple.rb". Ruby's "require" prevents you from loading a library two times and it does so by checking if a file name occurs more than once. In your case somewhere in the rails framework "require 'xml_simple'" is performed and you run "require 'xmlsimple'" afterwards. Hence, the library is loaded twice and all constants are redefined.</p>
-		<p>A solution is to only require XmlSimple unless XmlSimple has not been defined already.</p>
-	  </div>
+    <p>Answer: The reason for this is, that you're using XmlSimple explicitly in a rails app. XmlSimple is part of rails (you can find it in ./actionpack-1.12.5/lib/action_controller/vendor/xml_simple.rb). Unfortunately, the library is named "xml_simple.rb" and not "xmlsimple.rb". Ruby's "require" prevents you from loading a library two times and it does so by checking if a file name occurs more than once. In your case somewhere in the rails framework "require 'xml_simple'" is performed and you run "require 'xmlsimple'" afterwards. Hence, the library is loaded twice and all constants are redefined.</p>
+    <p>A solution is to only require XmlSimple unless XmlSimple has not been defined already.</p>
+    </div>
       <h2>Acknowledgements</h2>
       <p>
       A big "Thank you!" goes to

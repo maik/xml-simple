@@ -121,7 +121,7 @@ class XmlSimple
   # Create a "global" cache.
   @@cache = Cache.new
 
-  # Creates and intializes a new XmlSimple object.
+  # Creates and initializes a new XmlSimple object.
   #
   # defaults::
   #   Default values for options.
@@ -264,10 +264,10 @@ class XmlSimple
   # Declare options that are valid for xml_in and xml_out.
   KNOWN_OPTIONS = {
     'in'  => %w(
-      keyattr keeproot forcecontent contentkey noattr
-      searchpath forcearray suppressempty anonymoustag
-      cache grouptags normalisespace normalizespace
-      variables varattr keytosymbol attrprefix conversions
+      keyattr keeproot forcecontent contentkey noattr searchpath
+      forcearray suppressempty anonymoustag cache grouptags
+      normalisespace normalizespace variables varattr keytosymbol
+      attrtosymbol attrprefix conversions
     ),
     'out' => %w(
       keyattr keeproot contentkey noattr rootname
@@ -285,11 +285,12 @@ class XmlSimple
   DEF_FORCE_ARRAY     = true
   DEF_INDENTATION     = '  '
   DEF_KEY_TO_SYMBOL   = false
+  DEF_ATTR_TO_SYMBOL  = false
 
   # Normalizes option names in a hash, i.e., turns all
   # characters to lower case and removes all underscores.
-  # Additionally, this method checks, if an unknown option
-  # was used and raises an according exception.
+  # Additionally, this method checks if an unknown option
+  # was used, and raises an according exception.
   #
   # options::
   #   Hash to be normalized.
@@ -301,7 +302,7 @@ class XmlSimple
     options.each { |key, value|
       lkey = key.to_s.downcase.gsub(/_/, '')
       if !known_options.member?(lkey)
-        raise ArgumentError, "Unrecognised option: #{lkey}."
+        raise ArgumentError, "Unrecognized option: #{lkey}."
       end
       result[lkey] = value
     }
@@ -352,6 +353,8 @@ class XmlSimple
     end
 
     @options['keytosymbol'] = DEF_KEY_TO_SYMBOL unless @options.has_key?('keytosymbol')
+
+    @options['attrtosymbol'] = DEF_ATTR_TO_SYMBOL unless @options.has_key?('attrtosymbol')
 
     if @options.has_key?('contentkey')
       if @options['contentkey'] =~ /^-(.*)$/
@@ -710,9 +713,13 @@ class XmlSimple
     attributes = {}
     if @options['attrprefix']
       node.attributes.each { |n,v| attributes["@" + n] = v }
+    elsif @options.has_key?('attrtosymbol') and @options['attrtosymbol'] == true
+      #patch for converting attribute names to symbols
+      node.attributes.each { |n,v| attributes[n.to_sym] = v }
     else
       node.attributes.each { |n,v| attributes[n] = v }
     end
+
     attributes
   end
 
