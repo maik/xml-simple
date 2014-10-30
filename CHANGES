@@ -1,6 +1,4 @@
 Version 1.1.5:
-  - Changed included file name to match gem name (less confusing
-    for new users) - Amos Bieler
   - Added 'AttrToSymbol' option that converts attribute
     names to Ruby symbols - Amos Bieler
 
