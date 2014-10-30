@@ -8,5 +8,5 @@ Gem::Specification.new do |s|
   s.license = "Ruby"
   s.rubyforge_project = %q{xml-simple}
   s.authors = ["Maik Schmidt"]
-  s.files = ["lib/xml-simple.rb"]
+  s.files = ["lib/xmlsimple.rb"]
 end
