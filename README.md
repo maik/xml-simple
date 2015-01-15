@@ -15,7 +15,7 @@ See INSTALL.
 
 ## License
 
-XmlSimple is Copyright (c) 2003-2014 Maik Schmidt. It is free software,
+XmlSimple is Copyright (c) 2003-2015 Maik Schmidt. It is free software,
 and may be redistributed under the terms specified in the COPYING file
 of the current Ruby distribution.
 
