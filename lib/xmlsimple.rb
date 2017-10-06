@@ -267,7 +267,7 @@ class XmlSimple
       keyattr keeproot forcecontent contentkey noattr searchpath
       forcearray suppressempty anonymoustag cache grouptags
       normalisespace normalizespace variables varattr keytosymbol
-      attrtosymbol attrprefix conversions
+      attrtosymbol attrprefix conversions kabobtosnakecase
     ),
     'out' => %w(
       keyattr keeproot contentkey noattr rootname
@@ -286,6 +286,7 @@ class XmlSimple
   DEF_INDENTATION     = '  '
   DEF_KEY_TO_SYMBOL   = false
   DEF_ATTR_TO_SYMBOL  = false
+  DEF_KABOB_TO_SNAKE  = false
 
   # Normalizes option names in a hash, i.e., turns all
   # characters to lower case and removes all underscores.
@@ -454,6 +455,8 @@ class XmlSimple
     elsif @options.has_key?('varattr')
       @_var_values = {}
     end
+
+    @options['kabobtosnakecase'] = DEF_KABOB_TO_SNAKE unless @options.has_key?('kabobtosnakecase')
   end
 
   # Actually converts an XML document element into a data structure.
@@ -482,7 +485,7 @@ class XmlSimple
         result[@options['contentkey']] = content
       end
     elsif element.has_text? # i.e. it has only text.
-      return collapse_text_node(result, element)
+      return collapse_text_node(result, element) # calls merge, which converts
     end
 
     # Turn Arrays into Hashes if key fields present.
@@ -491,8 +494,11 @@ class XmlSimple
     # Disintermediate grouped tags.
     if @options.has_key?('grouptags')
       result.each { |key, value|
+        # In results, key should already be converted
+        raise("Unconverted key '#{key}' found. Should be '#{kabob_to_snake_case key}'.") if (key != kabob_to_snake_case(key))
         next unless (value.is_a?(Hash) && (value.size == 1))
         child_key, child_value = value.to_a[0]
+        child_key = kabob_to_snake_case child_key # todo test whether necessary
         if @options['grouptags'][key] == child_key
           result[key] = child_value
         end
@@ -548,6 +554,7 @@ class XmlSimple
     keyattr = @options['keyattr']
     if (keyattr.is_a?(Array) || keyattr.is_a?(Hash))
       hash.each { |key, value|
+        key = kabob_to_snake_case key
         if value.is_a?(Array)
           if keyattr.is_a?(Array)
             hash[key] = fold_array(value)
@@ -644,6 +651,7 @@ class XmlSimple
   # value::
   #   Value to be associated with key.
   def merge(hash, key, value)
+    key = kabob_to_snake_case key
     if value.is_a?(String)
       value = normalise_space(value) if @options['normalisespace'] == 2
 
@@ -658,7 +666,7 @@ class XmlSimple
 
       # look for variable definitions
       if @options.has_key?('varattr')
-        varattr = @options['varattr']
+        varattr = kabob_to_snake_case @options['varattr']
         if hash.has_key?(varattr)
           set_var(hash[varattr], value)
         end
@@ -712,12 +720,12 @@ class XmlSimple
   def get_attributes(node)
     attributes = {}
     if @options['attrprefix']
-      node.attributes.each { |n,v| attributes["@" + n] = v }
+      node.attributes.each { |n,v| attributes["@" + kabob_to_snake_case(n)] = v }
     elsif @options.has_key?('attrtosymbol') and @options['attrtosymbol'] == true
       #patch for converting attribute names to symbols
-      node.attributes.each { |n,v| attributes[n.to_sym] = v }
+      node.attributes.each { |n,v| attributes[kabob_to_snake_case(n).to_sym] = v }
     else
-      node.attributes.each { |n,v| attributes[n] = v }
+      node.attributes.each { |n,v| attributes[kabob_to_snake_case(n)] = v }
     end
 
     attributes
@@ -1034,6 +1042,20 @@ class XmlSimple
         end
       }
     end
+  end
+
+  # Substitutes underscores for hyphens if the KabobToSnakeCase option is selected. For when you don't
+  # want to refer to keys by hash[:'my-key'] but instead as hash[:my_key]
+  #
+  # key::
+  #   Key to be converted.
+  def kabob_to_snake_case(key)
+    return key unless (@options['kabobtosnakecase'])
+
+    is_symbol = key.is_a? Symbol
+    key = key.to_s.gsub(/-/, '_')
+    key = key.to_sym if is_symbol
+    key
   end
 end
 
