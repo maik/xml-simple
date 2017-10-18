@@ -69,7 +69,23 @@ END_OF_XML
         }
       }
     }
-    #puts XmlSimple.xml_out(hash)
+
+    expected = <<"END_OF_XML"
+<opt logdir="/var/log/foo/" debugfile="/tmp/foo.debug">
+  <server>
+    <sahara osversion="2.6" osname="solaris">
+      <address>10.0.0.101</address>
+      <address>10.0.1.101</address>
+    </sahara>
+    <gobi osversion="6.5" osname="irix" address="10.0.0.102" />
+    <kalahari osversion="2.0.34" osname="linux">
+      <address>10.0.0.103</address>
+      <address>10.0.1.103</address>
+    </kalahari>
+  </server>
+</opt>
+END_OF_XML
+    assert_equal(expected, XmlSimple.xml_out(hash))
   end
 
   def test_xyz
@@ -109,7 +125,35 @@ END_OF_XML
         },
       ],
     }
-    #puts XmlSimple.xml_out(hash)
+    expected = <<"END_OF_XML"
+<opt>
+  <abc>
+    <z>ZZZ</z>
+    <z></z>
+    <z></z>
+  </abc>
+  <b>
+    <c>Eins</c>
+    <c>Eins</c>
+    <c>Zwei</c>
+  </b>
+  <b>
+    <c>Drei</c>
+    <c>Zwei</c>
+    <c>
+      <d>yo</d>
+    </c>
+  </b>
+  <xyz>Hallo</xyz>
+  <att test="42" />
+  <att2 test="4711">CONTENT</att2>
+  <element att="1">one</element>
+  <element att="2">two</element>
+  <element att="3">three</element>
+</opt>
+END_OF_XML
+
+    assert_equal(expected, XmlSimple.xml_out(hash))
   end
 
   def test_output_with_symbols

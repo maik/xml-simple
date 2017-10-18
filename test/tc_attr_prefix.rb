@@ -51,7 +51,6 @@ class TC_AttrPrefix < Test::Unit::TestCase # :nodoc:
     },
     c)
 
-    out = REXML::Document.new XmlSimple.xml_out(c, 'AttrPrefix' => true)
     expected = REXML::Document.new <<-OUT
     <opt id="12253">
       <first_name>Joe</first_name>

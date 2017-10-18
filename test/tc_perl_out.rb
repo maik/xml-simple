@@ -417,7 +417,6 @@ class TC_Perl_Out < Test::Unit::TestCase # :nodoc:
     xml = XmlSimple.xml_out(hashref1)
     XmlSimple.xml_out(hashref1, { 'output_file' => test_file })
     assert(File.exist?(test_file))
-    x = IO::read(test_file)
     assert_equal(xml, IO::read(test_file))
     File.delete(test_file)
 
@@ -778,7 +777,7 @@ class TC_Perl_Out < Test::Unit::TestCase # :nodoc:
         opt1['TypeA'][i.to_s] = { 'Record' => {}}
         opt1['TypeB'][i.to_s] = { 'Record' => {}}
         opt1['TypeA'][i.to_s]['Record'][j.to_s] = { 'Hex' => sprintf("0x%04X", j) }
-        opt1['TypeB'][i.to_s]['Record'][j.to_s] = { 'Oct' => sprintf("04o", j) }
+        opt1['TypeB'][i.to_s]['Record'][j.to_s] = { 'Oct' => sprintf("%04o", j) }
       end
     end
 

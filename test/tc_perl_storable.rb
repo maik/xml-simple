@@ -99,13 +99,13 @@ class TC_Perl_Cache < Test::Unit::TestCase # :nodoc:
     assert(File::size(xml_file) == 0)
     pass_time(File::mtime(xml_file).to_i) # But ensure cache file is newer
     FileUtils.rm(cache_file)               # Seems to be rqd for test on Win32
-    File.open(cache_file, "w") { |file| file.write(Marshal.dump(expected, file)) }
+    File.open(cache_file, "w") { |f| f.write(Marshal.dump(expected, f)) }
     opt = XmlSimple.xml_in(xml_file, { 'force_array' => false, 'key_attr' => %w(name key id), 'cache' => 'storable' })
     assert_equal(expected, opt)
     t2 = File::mtime(cache_file)
     pass_time(t2.to_i)
     # Write some new data to the XML file
-    File.open(xml_file, "w") { |file| file.write('<opt one="1" two="2"></opt>' + "\n") }
+    File.open(xml_file, "w") { |f| f.write('<opt one="1" two="2"></opt>' + "\n") }
 
     # Parse with no caching
     opt = XmlSimple.xml_in(xml_file, { 'force_array' => false, 'key_attr' => %w(name key id) })

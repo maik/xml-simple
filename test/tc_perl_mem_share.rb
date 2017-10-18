@@ -85,7 +85,7 @@ class TC_Perl_Mem_Share < Test::Unit::TestCase # :nodoc:
     pass_time(Time::now().to_i)
 
     # Write some new data to the XML file
-    File.open(xml_file, "w") { |file| file.write('<opt one="1" two="2"></opt>' + "\n") }
+    File.open(xml_file, "w") { |f| f.write('<opt one="1" two="2"></opt>' + "\n") }
     # Ensure current time later than file time.
     pass_time(Time::now().to_i)
     opt = XmlSimple.xml_in(xml_file, { 'force_array' => false, 'key_attr' => %w(name key id), 'cache' => 'mem_share' })
