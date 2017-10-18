@@ -1,7 +1,7 @@
 # = XmlSimple
 #
 # Author::    Maik Schmidt <contact@maik-schmidt.de>
-# Copyright:: Copyright (c) 2003-2014 Maik Schmidt
+# Copyright:: Copyright (c) 2003-2017 Maik Schmidt
 # License::   Distributes under the same terms as Ruby.
 #
 require 'rexml/document'
