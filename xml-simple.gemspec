@@ -6,7 +6,6 @@ Gem::Specification.new do |s|
   s.email = %q{contact@maik-schmidt.de}
   s.homepage = %q{https://github.com/maik/xml-simple}
   s.license = "Ruby"
-  s.rubyforge_project = %q{xml-simple}
   s.authors = ["Maik Schmidt"]
   s.files = ["lib/xmlsimple.rb"]
 end
