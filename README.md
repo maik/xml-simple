@@ -16,13 +16,4 @@ See INSTALL.
 ## License
 
 XmlSimple is Copyright (c) 2003-2020 Maik Schmidt. It is free software,
-and may be redistributed under the terms specified in the COPYING file
-of the current Ruby distribution.
-
-## Warranty
-
-This software is provided "as is" and without any express or
-implied warranties, including, without limitation, the implied
-warranties of merchantability and fitness for a particular
-purpose.
-
+and may be redistributed under the terms specified in the LICENSE file.
