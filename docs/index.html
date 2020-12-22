@@ -877,6 +877,11 @@ p result
       <em>Note:</em> the current directory ('.') is not searched unless it is the
       directory containing the script.
       </p>
+      <h3>SelfClose =&gt; true | false (out)</h3>
+      <p>
+      If set, <em>xml_out</em> will use self-closing tags for empty elements.
+      For example: <pre>&lt;element /&gt;</pre> instead of <pre>&lt;element&gt;&lt;/element&gt;</pre>
+      </p>
       <h3>SuppressEmpty =&gt; true | '' | nil (in + out) (handy)</h3>
       <p>
       This option controls what <em>xml_in</em> should do with empty elements
