@@ -11,7 +11,7 @@ require 'stringio'
 class XmlSimple
   include REXML
 
-  @@VERSION = '1.1.7'
+  @@VERSION = '1.1.8'
 
   # A simple cache for XML documents that were already transformed
   # by xml_in.

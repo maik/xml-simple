@@ -1,3 +1,9 @@
+Version 1.1.8:
+  - orgads added SelfClose option.
+
+Version 1.1.7:
+  - Changed license to MIT.
+
 Version 1.1.5:
   - Added 'AttrToSymbol' option that converts attribute
     names to Ruby symbols - Amos Bieler
