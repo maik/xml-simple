@@ -272,7 +272,7 @@ class XmlSimple
     'out' => %w(
       keyattr keeproot contentkey noattr rootname
       xmldeclaration outputfile noescape suppressempty
-      anonymoustag indent grouptags noindent attrprefix
+      anonymoustag indent grouptags noindent attrprefix selfclose
     )
   }
 
@@ -835,7 +835,7 @@ class XmlSimple
             end
           end
         }
-      else
+      elsif !@options['selfclose']
         text_content = ''
       end
 

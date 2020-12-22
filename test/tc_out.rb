@@ -156,6 +156,27 @@ END_OF_XML
     assert_equal(expected, XmlSimple.xml_out(hash))
   end
 
+  def test_selfclose
+    hash = {
+      'root' => [
+        {
+          'empty' => ['text', {}, {}]
+        }
+      ]
+    }
+    expected = <<"END_OF_XML"
+<opt>
+  <root>
+    <empty>text</empty>
+    <empty />
+    <empty />
+  </root>
+</opt>
+END_OF_XML
+
+    assert_equal(expected, XmlSimple.xml_out(hash, 'selfclose' => true))
+  end
+
   def test_output_with_symbols
     test1 = { :foo => 'abc' }
     expected = "<opt foo=\"abc\" />\n"
