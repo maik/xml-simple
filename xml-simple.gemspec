@@ -8,4 +8,5 @@ Gem::Specification.new do |s|
   s.license = "MIT"
   s.authors = ["Maik Schmidt"]
   s.files = ["lib/xmlsimple.rb"]
+  s.add_runtime_dependency "rexml" 
 end
