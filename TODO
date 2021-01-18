@@ -1,5 +1,0 @@
-* Add namespace support.
-* Add strict mode.
-* Add SAX interface?
-* Completely refactor code and make it more Ruby-like.
-
