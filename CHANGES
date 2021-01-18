@@ -1,3 +1,6 @@
+Version 1.1.9:
+  - REXML dependency is explicit now in gemspec - Pavel Valena
+
 Version 1.1.8:
   - Orgad Shaneh added SelfClose option.
 
