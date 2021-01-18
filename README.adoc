@@ -87,7 +87,7 @@ If you want to generate XML (for example to write a modified version of _config_
 
 == Description
 
-The _XmlSimple_ class provides a simple API layer on top of the http://www.ruby-lang.org/en/raa-list.rhtml?name=REXML[REXML] parser. Additionally, two functions are exported: _xml_in_ and _xml_out_.
+The _XmlSimple_ class provides a simple API layer on top of the https://github.com/ruby/rexml/[REXML] parser. Additionally, two functions are exported: _xml_in_ and _xml_out_.
 
 The simplest approach is to call these two functions directly, but an optional object-oriented interface (see the section on <<OOInterface, Optional OO Interface>> below) allows them to be called as methods of an _XmlSimple_ object.
 
