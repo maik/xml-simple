@@ -4,7 +4,7 @@
 
 == Introduction
 
-Class _XmlSimple_ offers an easy API to read and write XML. It is a Ruby  translation of Grant McLean's Perl module http://www.cpan.org/modules/by-module/XML/GRANTM/[XML::Simple]. Please note, that this tutorial was originally written by Grant McLean. I have only converted it to Asciidoc and adjusted it for the Ruby version.
+The _XmlSimple_ class offers an easy API to read and write XML. It is a Ruby  translation of Grant McLean's Perl module http://www.cpan.org/modules/by-module/XML/GRANTM/[XML::Simple]. Please note, that this tutorial was originally written by Grant McLean. I have only converted it to Asciidoc and adjusted it for the Ruby version.
 
 == Installation
 
@@ -1008,7 +1008,7 @@ Question: if I include XmlSimple in a rails app and run for example 'rake' in th
 
 Answer: The reason for this is, that you're using XmlSimple explicitly in a rails app. XmlSimple is part of rails (you can find it in ./actionpack-1.12.5/lib/action_controller/vendor/xml_simple.rb). Unfortunately, the library is named "xml_simple.rb" and not "xmlsimple.rb". Ruby's "require" prevents you from loading a library two times and it does so by checking if a file name occurs more than once. In your case somewhere in the rails framework "require 'xml_simple'" is performed and you run "require 'xmlsimple'" afterwards. Hence, the library is loaded twice and all constants are redefined.
 
-A solution is to only require XmlSimple unless XmlSimple has not been defined already.
+A solution is to only require xml-simple unless XmlSimple has not been defined already.
 
 == Acknowledgements
 
